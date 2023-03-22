@@ -9,7 +9,7 @@ import random
 import location_util
 
 # Variables
-title_list = ['', 'Commoner', '', 'Duke', 'Baron']
+title_list = ['', 'Commoner', '', '', 'Baron']
 start_list = ["born"]
 
 # Character traits 
@@ -19,6 +19,8 @@ intelligence = -1
 
 isRich = False
 isGenius = False
+
+isRuler = True
 
 
 
@@ -31,8 +33,8 @@ else:
 # Lists
 names_list = ["John", "Adam", "Turkus", "Heinz", "David", "Alexos", "Claudia", "Megan", "Mathias", "Matward", "Gustavo", "Andre", "Andreas", "Ari", "Ariele", "Dofuso", "Viktorin"]
 educations_list = ["Church of Hard Knocks", "Vales", "Candybridge", "Oxborga", "Brown", "Federal University of Amogus", "Green Military Academy"]
-background_list = ["aristocrat", "noble", "royal", "doge", "merchant", "commoner", "poor painters"]
-rise_list = [" marrying the Princess of Oonga Boonga", 
+background_list = ["aristocrat", "noble", "royal", "patrician", "merchant", "commoner", "poor painters"]
+rise_list = [" marrying the Noble of Oonga Boonga", 
              " taking the throne after their father's passing", " inheriting a large fortune",
              " giving a highly popular speech to public", " violently overthrowing his rivals and gaining full authority over his subjects"]
 
@@ -56,7 +58,7 @@ rise = random.choice(rise_list)
 
 def monster_encounter():
     monster_list = ["ancient red dragon", "black dragon", "mindflayer", "giant spider", "orc captain", 
-    "beholder", "lich", "green dragon", "lich queen", "sea serpent", "hydra", "mummy" "white bear", "giant eagle", "giant scorpion"]
+    "beholder", "lich", "green dragon", "lich queen", "sea serpent", "hydra", "mummy" "white bear", "giant eagle", "giant scorpion", "Obus, Prince of Misfortune and Whining"]
     monster = random.choice(monster_list)
     verbs_list = ["dueled", "fought", "defeated", "confronted", "banished", "vanquished"]
     verb = random.choice(verbs_list)
@@ -87,8 +89,8 @@ def declaration_of_war():
 def war_started():
     progress_list = ["quickly progressed", "escalated to a large-scale war",  "progressed slowly", "remained a localised conflict", "was a long and bloody war"]
     process_list = ["with more than one enemies attacking", "over a land dispute", "for control of a important dungeon", "over a dynastic dispute"]
-    outcome_list = ["enemies were defeated", "a treaty was signed", "as no definitive victor emerged", "the war ended in a stalemate",
-     "the war ended with both sides claiming total victory over their enemy"]
+    outcome_list = ["enemies were defeated", "a treaty was signed", "as no definitive victor emerged", "in a stalemate",
+     "with both sides contradicting each other and claiming total victory over their enemy"]
 
     progress = random.choice(progress_list)
     process = random.choice(process_list)
@@ -133,11 +135,11 @@ def create_date(currentStartYear, rangeEnd):
 #Call the functions
 # Generating a Short Biography
 print(create_date(1001, 1029))
-print(title + " " + name + " was " + start + " into a " + background + " family " + "and received education at " +
-      education + ". " + pronoun + " rose to power by" + rise + ".")
-
-war_started()
-declaration_of_war()
-wealth_power()
+print(title + " " + name + " was " + start + " into a " + background + " family " + "and received education at " + education + ". ")
+if(isRuler):
+    print(pronoun + " rose to power by" + rise + ".")
+    war_started()
+    declaration_of_war()
+    wealth_power()
 print(monster_encounter())
 death_story()
