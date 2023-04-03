@@ -9,7 +9,7 @@ import random
 import location_util
 
 # Variables
-title_list = ['', 'Commoner', '', '', 'Baron']
+title_list = ['', 'Commoner ', '', '', 'Baron ']
 start_list = ["born"]
 
 # Character traits 
@@ -89,7 +89,7 @@ def declaration_of_war():
 def war_started():
     progress_list = ["quickly progressed", "escalated to a large-scale war",  "progressed slowly", "remained a localised conflict", "was a long and bloody war"]
     process_list = ["with more than one enemies attacking", "over a land dispute", "for control of a important dungeon", "over a dynastic dispute"]
-    outcome_list = ["enemies were defeated", "a treaty was signed", "as no definitive victor emerged", "in a stalemate",
+    outcome_list = ["as enemies were defeated", "after a treaty was signed", "as no definitive victor emerged", "in a stalemate",
      "with both sides contradicting each other and claiming total victory over their enemy"]
 
     progress = random.choice(progress_list)
@@ -123,19 +123,23 @@ def death_story():
                         "killed in a military coup", "killed in a peasant uprising",
                         "killed in a peasant revolt", "killed in a peasant rebellion", "killed in a holy war for long oppressed wizards rights", "killed in a peasant uprising", "killed in a peasant revolt",
                         "killed in a fierce peasant rebellion", "killed in a holy war for long oppressed wizards rights", "killed by the working class in failed attempt to seize means of precious gem production"]
-    death = random.choice(death_list)
-    print("In the end, " + pronoun + " was " + death + ".")
+    if(isRuler):
+        death = random.choice(ruler_death_list)
+    if(isRuler == False):
+        death = random.choice(death_list)
+    print("In the end, " + pronoun.lower() + " was " + death + ".")
 
 # Function to Generate range dates after "in the year XXX" for use in above events
 def create_date(currentStartYear, rangeEnd):
     years_range = range(currentStartYear, rangeEnd)
-    return f"In the year {random.choice(years_range)}:"
+    return f"In the year {random.choice(years_range)}"
 
 
 #Call the functions
 # Generating a Short Biography
 print(create_date(1001, 1029))
-print(title + " " + name + " was " + start + " into a " + background + " family " + "and received education at " + education + ". ")
+birthDate = create_date(1001, 1029)
+print(title + "" + name + " was " + start + " into a " + background + " family " + "and received education at " + education + ". ")
 if(isRuler):
     print(pronoun + " rose to power by" + rise + ".")
     war_started()
