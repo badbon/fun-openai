@@ -14,7 +14,8 @@ basic_response = openai.Completion.create(
     max_tokens=200,
     n=1,
     stop=None,
-    temperature=0.55,
+    temperature=0.5,
+    timeout=20,  
 )
 
 # Define possible options for character attributes
@@ -44,7 +45,8 @@ history_response = openai.Completion.create(
     max_tokens=200,
     n=1,
     stop=None,
-    temperature=1,
+    temperature=0.5,
+    timeout=20, 
 )
 
 # Extract information from history response
@@ -61,7 +63,8 @@ for i in range(500):
         max_tokens=200,
         n=1,
         stop=None,
-        temperature=0.9,
+        temperature=0.5,
+        timeout=20, 
     )
     year_event = year_response.choices[0].text
     year_by_year += f"\n\nYear {year}:\n{year_event}"
