@@ -4,14 +4,14 @@ import random
 import string
 
 openai.api_key = "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"
-model_engine = "text-davinci-003"  # or any other model ID
+model_engine = "text-davinci-002"  # or any other model ID
 
 # Generate basic physical facts and personal motivations
 basic_prompt = "Create a fantasy character who lives in a medieval world and explores dungeons to defeat skeletons and other monsters! Describe the character's race, hair color and style, and personal motivations."
 basic_response = openai.Completion.create(
     engine=model_engine,
     prompt=basic_prompt,
-    max_tokens=400,
+    max_tokens=200,
     n=1,
     stop=None,
     temperature=0.55,
@@ -41,18 +41,35 @@ history_prompt = f"Create a {race.lower()} character with {hair_color} {hair_sty
 history_response = openai.Completion.create(
     engine=model_engine,
     prompt=history_prompt,
-    max_tokens=800,
+    max_tokens=200,
     n=1,
     stop=None,
-    temperature=0.6,
+    temperature=1,
 )
 
 # Extract information from history response
 history = history_response.choices[0].text
+
+# Generate year-by-year history
+year = 0
+year_by_year = ""
+for i in range(500):
+    year_prompt = f"{history}\n\nIn the year {year}, what happened to {race.lower()}?"
+    year_response = openai.Completion.create(
+        engine=model_engine,
+        prompt=year_prompt,
+        max_tokens=200,
+        n=1,
+        stop=None,
+        temperature=0.9,
+    )
+    year_event = year_response.choices[0].text
+    year_by_year += f"\n\nYear {year}:\n{year_event}"
+    year += 1
 
 # Print results
 print(f"Race: {race}")
 print(f"Hair Color: {hair_color}")
 print(f"Hair Style: {hair_style}")
 print(f"Motivations: {', '.join(motivations)}")
-print(f"Year-by-Year History:\n{history}")
+print(f"\nYear-by-Year History:\n{year_by_year}")
