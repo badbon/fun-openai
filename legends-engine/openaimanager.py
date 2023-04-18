@@ -35,17 +35,9 @@ def generate_word(length):
    word = ''.join(random.choice(letters) for _ in range(length))
    return word
 
-for token in basic_response.choices[0].text.split():
-    if token.lower() == "human" or token.lower() == "dwarf" or token.lower() == "elf":
-        race = token
-    elif token.lower() == "hair":
-        hair_color = next(basic_response.choices[0].text.split(), "")
-        hair_style = next(basic_response.choices[0].text.split(), "")
-    elif token.lower() == "motivations:":
-        motivations = basic_response.choices[0].text.split(":")[1].strip().split(",")
+# Define OpenAI prompt
+history_prompt = f"Create a {race.lower()} character with {hair_color} {hair_style} hair. Describe the character's personality and motivations. What adventures has the character been on in their quest for {motivation}? Generate a short story about the character."
 
-# Generate year-by-year history
-history_prompt = f"Write the year-by-year history of a {race} character named {hair_color} {hair_style}, starting from year 0. The character's personal motivations are {', '.join(motivations)}."
 history_response = openai.Completion.create(
     engine=model_engine,
     prompt=history_prompt,
