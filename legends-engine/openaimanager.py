@@ -37,11 +37,14 @@ def generate_word(length):
 
 
 # Generate basic physical facts and personal motivations
-basic_prompt = "Create a fantasy RPG character who lives in a medieval world and explores dungeons to defeat skeletons and other monsters! Do not actually describe their equipment or skills, just motivations and personality"
+basic_prompt = "Create a fantasy RPG character who lives in a medieval world and explores dungeons to \
+    defeat skeletons and other monsters! Do not actually describe their equipment or skills, or current age. this section is more of an intro. Character Name: " + name.lower()
+    
+#print("Inputting an intro prompt: " + basic_prompt)
 basic_response = openai.Completion.create(
     engine=model_engine,
     prompt=basic_prompt,
-    max_tokens=300,
+    max_tokens=220,
     n=1,
     stop=None,
     temperature=1.0,
@@ -49,45 +52,33 @@ basic_response = openai.Completion.create(
 )
 
 # OpenAI prompt
-history_prompt = f"Create a medieval fantasy RPG {name.lower()} character with {hair_color} {hair_style} hair. of {race.lower()} race. Describe the character's personality and motivations. What adventures has the character been on in their quest for {motivation}? Generate a short story about the character."
-
+history_prompt = f"Create a medieval fantasy RPG {name} character with \
+    {hair_color} {hair_style} hair. of {race.lower()} race. Describe the character's personality and motivations. What adventures has the character been on in their quest for {motivation}? \
+        Generate a short story about the character. Be aware of previous intro not to make contradictions: " + basic_response.choices[0].text
+        
+#print("Inputting a history prompt: " + history_prompt)
 history_response = openai.Completion.create(
     engine=model_engine,
     prompt=history_prompt,
-    max_tokens=300,
+    max_tokens=350,
     n=1,
     stop=None,
-    temperature=0.8,
+    temperature=1.0,
     timeout=20, 
 )
 
 # Extract information from history response
 history = history_response.choices[0].text
 
-# Generate year-by-year history for selected intervals
-""" year_by_year = ""
-for i in range(4):
-    year = random.randint(0, 500)
-    year_prompt = f"{history}\n\nIn the year {year}, what happened to {race.lower()}?"
-    year_response = openai.Completion.create(
-        engine=model_engine,
-        prompt=year_prompt,
-        max_tokens=200,
-        n=1,
-        stop=None,
-        temperature=0.5,
-        timeout=20, 
-    )
-    year_event = year_response.choices[0].text
-    year_by_year += f"\n\nYear {year}:\n{year_event}"
- """
+# Extract character name and other necessary attributes
 
-# Print results
+char_name = name
+char_motivations = motivation
+
+# Print final results
 print(basic_response.choices[0].text)
-print(history_response.choices[0].text)
-
-#print(f"Race: {race}")
-#print(f"Hair Color: {hair_color}")
-#print(f"Hair Style: {hair_style}")
-print(f"Motivations: {', '.join(motivations)}")
-#print(f"\nYear-by-Year History:{year_by_year}")
+print("\n" + history_response.choices[0].text)
+def debug():
+    print("Character name: " + char_name)
+    print("Character motivations: " + char_motivations)
+debug()
