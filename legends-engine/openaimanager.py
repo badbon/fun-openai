@@ -21,6 +21,9 @@ hair_colors = ["black", "blonde", "brown", "red", "gray"]
 hair_styles = ["short", "medium", "long", "curly", "straight"]
 motivations = ["glory", "revenge", "riches", "power", "knowledge"]
 
+types_of_character_intent = ["trade and converse with adventurers! " , "find a new adventurer to lead him to battle and glory.", "defeat skeletons and other monsters!" ]
+prompt_clarification = "Do not actually describe their equipment, or current age. this section is more of an intro and short biography. Character Name: "
+
 # Randomly select character attributes
 name = generate_name()
 
@@ -28,44 +31,45 @@ race = random.choice(races)
 hair_color = random.choice(hair_colors)
 hair_style = random.choice(hair_styles)
 motivation = random.choice(motivations)
+intent = random.choice(types_of_character_intent)
 
 def generate_word(length):
    """Generate a random word with the specified length."""
    letters = string.ascii_lowercase
    word = ''.join(random.choice(letters) for _ in range(length))
    return word
+ 
+# More customized prompts testing
+custom_prompt = "Create a fantasy RPG character who lives in a medieval world " + " and currently lives in the dungeons to " + intent + prompt_clarification + name.lower()
 
-
-# Generate basic physical facts and personal motivations
-basic_prompt = "Create a fantasy RPG character who lives in a medieval world and explores dungeons to \
-    defeat skeletons and other monsters! Do not actually describe their equipment or skills, or current age. this section is more of an intro. Character Name: " + name.lower()
-    
-#print("Inputting an intro prompt: " + basic_prompt)
+# OpenAI prompt
 basic_response = openai.Completion.create(
     engine=model_engine,
-    prompt=basic_prompt,
-    max_tokens=220,
+    prompt=custom_prompt,
+    max_tokens=200,
     n=1,
     stop=None,
     temperature=1.0,
     timeout=20,  
 )
 
-# OpenAI prompt
 history_prompt = f"Create a medieval fantasy RPG {name} character with \
     {hair_color} {hair_style} hair. of {race.lower()} race. Describe the character's personality and motivations. What adventures has the character been on in their quest for {motivation}? \
         Generate a short story about the character. Be aware of previous intro not to make contradictions: " + basic_response.choices[0].text
         
-#print("Inputting a history prompt: " + history_prompt)
 history_response = openai.Completion.create(
     engine=model_engine,
     prompt=history_prompt,
-    max_tokens=350,
+    max_tokens=300,
     n=1,
     stop=None,
     temperature=1.0,
     timeout=20, 
 )
+
+def debug():
+    print("Character name: " + char_name)
+    print("Character motivations: " + char_motivations)
 
 # Extract information from history response
 history = history_response.choices[0].text
@@ -76,9 +80,8 @@ char_name = name
 char_motivations = motivation
 
 # Print final results
-print(basic_response.choices[0].text)
-print("\n" + history_response.choices[0].text)
-def debug():
-    print("Character name: " + char_name)
-    print("Character motivations: " + char_motivations)
 debug()
+
+print(basic_response.choices[0].text)
+print("\nHISTORY RESPONSE:" + history_response.choices[0].text)
+
