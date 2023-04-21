@@ -5,6 +5,7 @@ import string
 
 openai.api_key = "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"
 model_engine = "text-davinci-002"
+model_engine_BTest = "text-davinci-003"
 
 def generate_name():
     """Generate a random fantasy character name."""
@@ -21,7 +22,7 @@ hair_colors = ["black", "blonde", "brown", "red", "gray"]
 hair_styles = ["short", "medium", "long", "curly", "straight"]
 motivations = ["glory", "revenge", "riches", "power", "knowledge"]
 
-types_of_character_intent = ["trade and converse with adventurers! " , "find a new adventurer to lead him to battle and glory.", "defeat skeletons and other monsters!" ]
+types_of_character_intent = ["trade and converse with adventurers! " , "find a new adventurer to lead him to battle and glory.", "defeat skeletons and other monsters!", "get very rich exploring and gathering ores and gems in dangerous dungeons" ]
 prompt_clarification = "Do not actually describe their equipment, or current age. this section is more of an intro and short biography. Character Name: "
 
 # Randomly select character attributes
@@ -46,7 +47,7 @@ custom_prompt = "Create a fantasy RPG character who lives in a medieval world " 
 basic_response = openai.Completion.create(
     engine=model_engine,
     prompt=custom_prompt,
-    max_tokens=200,
+    max_tokens=180,
     n=1,
     stop=None,
     temperature=1.0,
@@ -60,7 +61,7 @@ history_prompt = f"Create a medieval fantasy RPG {name} character with \
 history_response = openai.Completion.create(
     engine=model_engine,
     prompt=history_prompt,
-    max_tokens=300,
+    max_tokens=240,
     n=1,
     stop=None,
     temperature=1.0,
@@ -70,6 +71,7 @@ history_response = openai.Completion.create(
 def debug():
     print("Character name: " + char_name)
     print("Character motivations: " + char_motivations)
+    print("Character intent: " + intent)
 
 # Extract information from history response
 history = history_response.choices[0].text
