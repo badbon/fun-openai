@@ -8,7 +8,6 @@ model_engine = "text-davinci-002"
 model_engine_BTest = "text-davinci-003"
 
 def generate_name():
-    """Generate a random fantasy character name."""
     first_names = ["Aelar", "Aerin", "Aeron", "Aiden", "Aila", "Ailis", "Aislinn", "Alaric", "Aldair", "Alden", "Althaea", "Althea", "Amaranth", "Amaryllis", "Amethyst", "Anastaria", "Andriel", "Aneira", "Aneirin", "Arael", "Araminta", "Arcadia", "Arcturus", "Ariadne", "Arianrhod", "Arien", "Arin", "Arista", "Aristaeus", "Aristeia", "Artemis", "Arya", "Asphodel", "Astrid", "Atalanta", "Atara", "Aurora", "Avalon", "Aviana", "Axel", "Ayla", "Azura"]
     last_names = ["Ashworth", "Blackwood", "Bloodmoon", "Darkwater", "Drakon", "Dragonrider", "Elmwood", "Fairwind", "Frostfire", "Goldheart", "Goldmane", "Hartwood", "Icetongue", "Ironclaw", "Ironfoot", "Moonwhisper", "Nightshade", "Oakenshield", "Ravenwood", "Redmane", "Rosewater", "Silversmith", "Snowdrift", "Stagrunner", "Stargazer", "Starweaver", "Stormchaser", "Stormcaller", "Stormwatcher", "Sunspear", "Thornbush", "Thunderstrike", "Vale", "Waverunner", "Whitethorn", "Wildfire", "Wildheart", "Wintermoon", "Wolfbloom", "Woodland", "Wyrmslayer"]
 
