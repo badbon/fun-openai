@@ -54,10 +54,9 @@ basic_response = openai.Completion.create(
     timeout=20,  
 )
 
-history_prompt = f"Create a medieval fantasy RPG {name} character with \
-    {hair_color} {hair_style} hair. of {race.lower()} race. Describe the character's personality and motivations. What adventures has the character been on in their quest for {motivation}? \
-        Generate a short story about the character. Be aware of previous intro not to make contradictions: " + basic_response.choices[0].text
-        
+history_prompt = f"Create a medieval fantasy RPG {name} character with of {race.lower()} race. Describe the character's personality and motivations. What adventures has the character been on in their quest for {motivation}? \
+        Generate a short adventures story about the character. Be aware of preceeding intro not to make contradictions: " + basic_response.choices[0].text
+print("DEBUG:  " + history_prompt)      
 history_response = openai.Completion.create(
     engine=model_engine,
     prompt=history_prompt,
