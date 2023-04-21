@@ -1,10 +1,12 @@
 import openai
-import os
 import random
 import string
 
 openai.api_key = "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"
-model_engine = "text-davinci-003" # Pay attention if this is 002 or 003. 003 is the latest version of the engine.
+
+# Pay attention if this is 002 or 003. 003 is a tiny bit more powerful. But 002 is way faster, especially when testing its great.
+model_engine = "text-davinci-003" 
+
 
 # Kingdom Name Generator
 def generate_name():
@@ -32,7 +34,7 @@ race = random.choice(races)
 motivation = random.choice(motivations)
  
 # More customized prompts testing
-custom_prompt = "Create a fantasy RPG Kingdoms introduction that rules in a fictional world. Briefly describing their philosophy, rulership and strength as a nation. Their primary motivations are: " + motivation + " the Kingdom is named: " + name + "\n  (medieval, fantasy setting)"
+custom_prompt = "Create a fantasy RPG Kingdoms objective introduction that rules in a fictional world. Briefly describing their philosophy, rulership and strength as a nation. Their primary motivations are: " + motivation + " the Kingdom is named: " + name + "\n  (medieval, fantasy setting)"
 
 # OpenAI prompt
 basic_response = openai.Completion.create(
