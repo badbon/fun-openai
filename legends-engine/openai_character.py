@@ -63,6 +63,8 @@ def create_character():
         print("Character name: " + char_name)
         print("Character motivations: " + char_motivations)
         print("Character intent: " + intent)
+        print("\nBASIC RESPONSE:" + basic_response.choices[0].text)
+        print("\nHISTORY RESPONSE:" + history_response.choices[0].text)
 
     # Extract information from history response
     history = history_response.choices[0].text
@@ -73,10 +75,7 @@ def create_character():
     char_motivations = motivation
 
     # Print final results
-    debug()
-
-    print(basic_response.choices[0].text)
-    print("\nHISTORY RESPONSE:" + history_response.choices[0].text)
+    #debug()
     
     return history_response.choices[0].text, char_name, char_motivations
 

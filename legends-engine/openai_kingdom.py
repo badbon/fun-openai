@@ -51,8 +51,4 @@ basic_response = openai.Completion.create(
 def debug():
     print("name: " + name)
     print("motivations: " + motivation)
-
-# Print final results
-debug()
-
-print("Response: \n " + basic_response.choices[0].text)
+    print("Response: \n " + basic_response.choices[0].text)
