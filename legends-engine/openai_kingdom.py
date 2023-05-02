@@ -22,33 +22,42 @@ def generate_name():
     last_name = random.choice(last_name_word)
     return f"{first_name} {last_name}"
 
-# Define possible options for character attributes
-races = ["Human", "Dwarf", "Elf"]
+def create_kingdom():
+    # Define possible options for character attributes
+    races = ["Human", "Dwarf", "Elf"]
 
-motivations = ["glory", "riches", "power", "knowledge", "connection to (fictional) dieties"]
-#prompt_clarification = "Do not actually describe their equipment, or current age. this section is more of an intro and short biography. Character Name: "
+    motivations = ["glory", "riches", "power", "knowledge", "connection to (fictional) dieties"]
+    #prompt_clarification = "Do not actually describe their equipment, or current age. this section is more of an intro and short biography. Character Name: "
 
-# Randomly select Kingdom attributes
-name = generate_name()
-race = random.choice(races)
-motivation = random.choice(motivations)
- 
-# More customized prompts testing
-custom_prompt = "Create a fantasy RPG Kingdoms objective introduction that rules in a fictional world. Briefly describing their philosophy, rulership and strength as a nation. Their primary motivations are: " + motivation + " the Kingdom is named: " + name + "\n  (medieval, fantasy setting)"
+    # Randomly select Kingdom attributes
+    name = generate_name()
+    race = random.choice(races)
+    motivation = random.choice(motivations)
 
-# OpenAI prompt
-basic_response = openai.Completion.create(
-    engine=model_engine,
-    prompt=custom_prompt,
-    max_tokens=300,
-    n=1,
-    stop=None,
-    temperature=1.0,
-    timeout=20,  
-)
+    # More customized prompts testing
+    custom_prompt = "Create a fantasy RPG Kingdoms objective introduction that rules in a fictional world. Briefly describing their philosophy, rulership and strength as a nation. Their primary motivations are: " + motivation + " the Kingdom is named: " + name + "\n  (medieval, fantasy setting)"
+
+    # OpenAI prompt
+    basic_response = openai.Completion.create(
+        engine=model_engine,
+        prompt=custom_prompt,
+        max_tokens=300,
+        n=1,
+        stop=None,
+        temperature=1.0,
+        timeout=20,  
+    )
+    
+    kingdom = {
+        'name': name,
+        'characters_associated': '',
+        'motivations:': motivation,
+        'biography': basic_response.choices[0].text
+    }
+    return kingdom
 
 
-def debug():
-    print("name: " + name)
-    print("motivations: " + motivation)
-    print("Response: \n " + basic_response.choices[0].text)
+# def debug():
+#     print("name: " + name)
+#     print("motivations: " + motivation)
+#     print("Response: \n " + basic_response.choices[0].text)

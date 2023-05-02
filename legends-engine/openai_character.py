@@ -75,6 +75,16 @@ def create_character():
     # Print final results
     #debug()
     
-    return history_response.choices[0].text, char_name, char_motivations
+    character = {
+        'full_name': char_name,
+        'kingdom': 'Kingdom',
+        'race': race,
+        'motivation': char_motivations,
+        'intent': intent,        
+        'biography': basic_response.choices[0].text,
+        'history': history_response.choices[0].text,
+    }
+    return character
 
-create_character()
+
+print(create_character())
