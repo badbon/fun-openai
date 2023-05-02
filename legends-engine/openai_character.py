@@ -18,8 +18,6 @@ def generate_name():
 def create_character():
     # Define possible options for character attributes
     races = ["Human", "Dwarf", "Elf"]
-    hair_colors = ["black", "blonde", "brown", "red", "gray"]
-    hair_styles = ["short", "medium", "long", "curly", "straight"]
     motivations = ["glory", "seeking life meaning", "riches", "power", "knowledge"]
 
     types_of_character_intent = ["trade and converse with adventurers! ", "find a new adventurer to lead him to battle and glory.", "defeat skeletons and other monsters!", "get very rich exploring and gathering ores and gems in dangerous dungeons" ]

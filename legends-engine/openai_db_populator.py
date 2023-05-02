@@ -1,27 +1,56 @@
 import mysql.connector
+import os
+
+# Change the working directory to the location of this script
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
+# Create a file called password.txt and store your MySQL password in it (gitignore will ignore this file)
+with open('password.txt', 'r') as file:
+    fileReadPassword = file.read().strip()
 
 # Connect to the MySQL database
 mydb = mysql.connector.connect(
   host="localhost",
-  user="root",
-  password="test",
+  user="dungeon",
+  password = fileReadPassword,
   database="rkdb"
 )
 
-# Create a cursor object to execute SQL queries
-mycursor = mydb.cursor()
+def populate_db():
+  cursor = mydb.cursor()
+  
+  cursor.execute("UPDATE")
 
-# Insert data into the Characters table
-sql = "INSERT INTO Characters (name, age, gender) VALUES (%s, %s, %s)"
-val = ("John", 32, "Male")
-mycursor.execute(sql, val)
-mydb.commit()
+# Useful for first run on localhost
+def initialize_db():
+  # Create a cursor object to execute SQL queries
+  cursor = mydb.cursor()
 
-# Insert data into the Kingdoms table
-sql = "INSERT INTO Kingdoms (name, population, ruler) VALUES (%s, %s, %s)"
-val = ("Asgard", 1000000, "Odin")
-mycursor.execute(sql, val)
-mydb.commit()
+  # Create table - characters
+  cursor.execute("""
+  CREATE TABLE characters (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      full_name VARCHAR(255),
+      kingdom VARCHAR(255),
+      race VARCHAR(255),
+      biography TEXT,
+      motivation TEXT,
+      intent TEXT,
+      history TEXT
+  )
+  """)
 
-# Close the database connection
-mydb.close()
+  # Create table - kingdoms
+  cursor.execute("""
+  CREATE TABLE kingdoms (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      name VARCHAR(255),
+      characters_associated VARCHAR(255),
+      biography TEXT
+  )
+  """)
+
+  # Commit the changes and close the connection
+  mydb.commit()
+  cursor.close()
+  mydb.close()
