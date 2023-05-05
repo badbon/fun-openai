@@ -1,5 +1,7 @@
 import mysql.connector
 import os
+import openai_character
+from openai_character import create_character
 
 # Change the working directory to the location of this script
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -16,10 +18,29 @@ mydb = mysql.connector.connect(
   database="rkdb"
 )
 
-def populate_db():
-  cursor = mydb.cursor()
+def insert_character():
+  character = create_character()
   
-  cursor.execute("UPDATE")
+
+  query = """
+  INSERT INTO characters (full_name, kingdom, race, biography, motivation, intent, history)
+  VALUES (%s, %s, %s, %s, %s, %s, %s)
+  """
+  
+  full_name = character['full_name']
+  kingdom = character['kingdom']
+  race = character['race']
+  biography = character['biography']
+  motivation = character['motivation']
+  intent = character['intent']
+  history = character['history']
+
+  cursor = mydb.cursor()
+  cursor.execute(query, (full_name, kingdom, race, biography, motivation, intent, history))
+  mydb.commit()
+  cursor.close()
+  mydb.close()
+
 
 # Useful for first run on localhost
 def initialize_db():
