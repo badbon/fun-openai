@@ -1,7 +1,6 @@
 import mysql.connector
 import os
-import openai_character
-from openai_character import create_character
+from character import create_character
 
 # Change the working directory to the location of this script
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
