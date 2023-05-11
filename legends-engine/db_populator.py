@@ -9,37 +9,42 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 with open('password.txt', 'r') as file:
     fileReadPassword = file.read().strip()
 
-# Connect to the MySQL database
 mydb = mysql.connector.connect(
   host="localhost",
   user="dungeon",
-  password = fileReadPassword,
+  password=fileReadPassword,
   database="rkdb"
 )
 
 def insert_character():
   character = create_character()
   
+  try:
+    query = """
+    INSERT INTO characters (full_name, kingdom, race, biography, motivation, intent, history)
+    VALUES (%s, %s, %s, %s, %s, %s, %s)"""
+    
+    full_name = character['full_name']
+    kingdom = character['kingdom']
+    race = character['race']
+    biography = character['biography']
+    motivation = character['motivation']
+    intent = character['intent']
+    history = character['history']
 
-  query = """
-  INSERT INTO characters (full_name, kingdom, race, biography, motivation, intent, history)
-  VALUES (%s, %s, %s, %s, %s, %s, %s)
-  """
-  
-  full_name = character['full_name']
-  kingdom = character['kingdom']
-  race = character['race']
-  biography = character['biography']
-  motivation = character['motivation']
-  intent = character['intent']
-  history = character['history']
+    cursor = mydb.cursor()
+    print("\nDB: " + str(mydb))
+    cursor.execute(query, (full_name, kingdom, race, biography, motivation, intent, history))
+    # Commit the changes to the database
+    mydb.commit()
 
-  cursor = mydb.cursor()
-  cursor.execute(query, (full_name, kingdom, race, biography, motivation, intent, history))
-  mydb.commit()
-  cursor.close()
-  mydb.close()
+  except mysql.connector.Error as error:
+    print("\nMySQL Query Error:", error)
 
+  finally:
+    # Close the connection
+    cursor.close()
+    mydb.close()
 
 # Useful for first run on localhost
 def initialize_db():
@@ -70,7 +75,13 @@ def initialize_db():
   )
   """)
 
+
   # Commit the changes and close the connection
   mydb.commit()
   cursor.close()
   mydb.close()
+  
+  
+  
+#
+insert_character()
