@@ -53,7 +53,7 @@ def initialize_db():
 
   # Create table - characters
   cursor.execute("""
-  CREATE TABLE characters (
+  CREATE TABLE IF NOT EXISTS characters (
       id INT AUTO_INCREMENT PRIMARY KEY,
       full_name VARCHAR(255),
       kingdom VARCHAR(255),
@@ -61,19 +61,25 @@ def initialize_db():
       biography TEXT,
       motivation TEXT,
       intent TEXT,
-      history TEXT
-  )
-  """)
+      history TEXT)""")
 
   # Create table - kingdoms
   cursor.execute("""
-  CREATE TABLE kingdoms (
+  CREATE TABLE IF NOT EXISTS kingdoms (
       id INT AUTO_INCREMENT PRIMARY KEY,
       name VARCHAR(255),
       characters_associated VARCHAR(255),
-      biography TEXT
-  )
-  """)
+      biography TEXT)""")
+  
+  cursor.execute("""CREATE TABLE IF NOT EXISTS maps (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    roombased TINYINT,
+    population TINYINT,
+    wealth TINYINT,
+    civilized TINYINT,
+    name VARCHAR(255),
+    intro TEXT,
+    history TEXT);""")
 
 
   # Commit the changes and close the connection
@@ -82,6 +88,5 @@ def initialize_db():
   mydb.close()
   
   
-  
-#
+#initialize_db()
 insert_character()
