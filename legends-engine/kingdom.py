@@ -64,7 +64,7 @@ class Map(Kingdom):
 
 def create_kingdom():
     races = ["Human", "Dwarf", "Elf"]
-    motivations = ["glory", "riches", "power", "knowledge", "connection to (fictional) deities"]
+    motivations = ["glory", "riches", "power", "knowledge", "connection to the deities"]
 
     name = random.choice(races)
     motivation = random.choice(motivations)
