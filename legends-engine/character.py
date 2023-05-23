@@ -1,9 +1,8 @@
 import openai
-import os
+import util
 import random
-import string
 
-openai.api_key = "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"
+openai.api_key = util.get_api_key()
 model_engine = "text-davinci-002"
 model_engine_BTest = "text-davinci-003"
 

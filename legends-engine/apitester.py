@@ -1,9 +1,10 @@
 import requests
 import json
+import util
 import openai
 
 url = "https://api.openai.com/v1/engines/text-davinci-002/completions"
-openai.api_key = "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"
+openai.api_key = util.get_api_key()
 headers = {
     "Content-Type": "application/json",
     "Authorization": f"Bearer {openai.api_key}"

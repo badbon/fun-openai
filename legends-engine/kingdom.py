@@ -1,7 +1,8 @@
 import openai
 import random
+import util
 
-openai.api_key = "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"
+openai.api_key = util.get_api_key()
 
 # Pay attention if this is 002 or 003. 003 is a tiny bit more powerful. But 002 is way faster, especially when testing its great.
 model_engine = "text-davinci-003"
