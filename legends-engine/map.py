@@ -1,5 +1,4 @@
 import openai
-from textblob import TextBlob
 import util
 
 openai.api_key = util.get_api_key()

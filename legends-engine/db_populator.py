@@ -1,6 +1,7 @@
 import mysql.connector
 import os
 from character import create_character
+import kingdom as kingdom_gen
 
 # Change the working directory to the location of this script
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -16,9 +17,10 @@ mydb = mysql.connector.connect(
   database="rkdb"
 )
 
+# CHARACTER TABLE
 def insert_character():
   character = create_character()
-  
+  cursor = mydb.cursor()
   try:
     query = """
     INSERT INTO characters (full_name, kingdom, race, biography, motivation, intent, history)
@@ -32,8 +34,6 @@ def insert_character():
     intent = character['intent']
     history = character['history']
 
-    cursor = mydb.cursor()
-    print("\nDB: " + str(mydb))
     cursor.execute(query, (full_name, kingdom, race, biography, motivation, intent, history))
     # Commit the changes to the database
     mydb.commit()
@@ -46,6 +46,32 @@ def insert_character():
     cursor.close()
     mydb.close()
 
+def insert_kingdom():
+  kingdom = kingdom_gen.create_kingdom()
+  
+  try:
+    query = """
+    INSERT INTO kingdoms (name, characters_associated, biography)
+    VALUES (%s, %s, %s)"""
+    
+    name = kingdom.name
+    characters_associated = ''
+    biography = kingdom.biography
+
+    cursor = mydb.cursor()
+    print("\nDB: " + str(mydb))
+    cursor.execute(query, (name, characters_associated, biography))
+    mydb.commit()
+  
+  except mysql.connector.Error as error:
+    print("\nMySQL Query Error:", error)
+    
+  finally:
+    cursor.close()
+    mydb.close()
+
+
+# -----
 # Useful for first run on localhost
 def initialize_db():
   # Create a cursor object to execute SQL queries
@@ -88,5 +114,6 @@ def initialize_db():
   mydb.close()
   
   
-#initialize_db()
-insert_character()
+# initialize_db()
+insert_kingdom()
+#insert_character()

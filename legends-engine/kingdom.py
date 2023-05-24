@@ -15,11 +15,11 @@ class Kingdom:
         self.biography = ""
 
     def generate_name(self):
-        first_name_word = ["Aelar", "Aislinn", "Aldair", "Alden", "Althea", "Amaranth",
-                           "Amaryllis", "Amethyst", "Anastaria", "Aneira", "Aneirin", "Arael", "Araminta", "Arcadia",
-                           "Arcturus", "Ariadne", "Arianrhod", "Aristaeus", "Aristeia", "Artemis", "Astrid", "Atalanta",
+        first_name_word = ["Aelar", "Aldair", "Alden", "Althea", "Amaranth",
+                           "Amaryllis", "Amethyst", "Aneira", "Aneirin", "Arael", "Arcadia",
+                           "Arcturus", "Ariadne", "Arianrhod", "Astrid",
                            "Atara", "Aurora", "Avalon", "Aviana", "Axel", "Azura",
-                           "Gaeloria", "Aurindor", "Narundor", "Draconia", "Celestria", "Silvershade", "Shadowkeep",
+                           "Gaeloria", "Narundor", "Draconia", "Celestria", "Silvershade", "Shadowkeep",
                            "Amberwind",
                            "Elvandar", "Wintershield", "Stormhold", "Firewatch", "Mistwood", "Wildewood", "Emberfall",
                            "Frostfang", "Ironhelm",
@@ -28,7 +28,7 @@ class Kingdom:
                            "Thunderhold", "Gloomhaven", "Darkmoor", "Moonshadow", "Vinehaven"]
         
         last_name_word = ["Khanate", "Empire", "Duchy", "Grounds", "Lands", "Kingdom", "Realm", "Nation", "Dominion",
-                          "Commonwealth", "Federation", "Republic", "Nation", "Principality", "Protectorate", "Settlement"]
+                          "Commonwealth", "Federation", "Republic", "Nation", "Principality", "Protectorate"]
 
         first_name = random.choice(first_name_word)
         last_name = random.choice(last_name_word)
@@ -47,8 +47,7 @@ class Kingdom:
             n=1,
             stop=None,
             temperature=1.0,
-            timeout=20,
-            )
+            timeout=20,)
 
         self.biography = basic_response.choices[0].text
 
