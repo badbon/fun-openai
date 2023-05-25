@@ -46,6 +46,7 @@ def insert_character():
     cursor.close()
     mydb.close()
 
+# KINGDOM TABLE
 def insert_kingdom():
   kingdom = kingdom_gen.create_kingdom()
   

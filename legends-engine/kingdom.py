@@ -9,7 +9,7 @@ model_engine = "text-davinci-003"
 
 # Base class representing a Kingdom
 class Kingdom:
-    def __init__(self, name, motivation):
+    def __init__(self, name, motivation, biography):
         self.name = name
         self.motivation = motivation
         self.biography = ""
@@ -51,26 +51,15 @@ class Kingdom:
 
         self.biography = basic_response.choices[0].text
 
-
-# Derived class representing a Map
-class Map(Kingdom):
-    def __init__(self, name, motivation):
-        super().__init__(name, motivation)
-
-    def generate_map(self):
-        # Logic to generate the map
-        pass
-
-
 def create_kingdom():
     races = ["Human", "Dwarf", "Elf"]
     motivations = ["glory", "riches", "power", "knowledge", "connection to the deities"]
 
-    name = random.choice(races)
+    name = Kingdom.generate_name()
     motivation = random.choice(motivations)
+    biography = Kingdom.generate_biography()
+    kingdom = Kingdom(name, motivation, biography)
 
-    kingdom = Map(name, motivation)
-    kingdom.generate_map()  # Call the specific method for generating the map
     return kingdom
 
 
