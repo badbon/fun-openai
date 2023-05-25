@@ -12,9 +12,9 @@ class Kingdom:
     def __init__(self, name, motivation, biography):
         self.name = name
         self.motivation = motivation
-        self.biography = ""
+        self.biography = biography
 
-    def generate_name(self):
+    def generate_name():
         first_name_word = ["Aelar", "Aldair", "Alden", "Althea", "Amaranth",
                            "Amaryllis", "Amethyst", "Aneira", "Aneirin", "Arael", "Arcadia",
                            "Arcturus", "Ariadne", "Arianrhod", "Astrid",
@@ -52,18 +52,16 @@ class Kingdom:
         self.biography = basic_response.choices[0].text
 
 def create_kingdom():
-    races = ["Human", "Dwarf", "Elf"]
+    #races = ["Human", "Dwarf", "Elf"]
     motivations = ["glory", "riches", "power", "knowledge", "connection to the deities"]
 
     name = Kingdom.generate_name()
     motivation = random.choice(motivations)
-    biography = Kingdom.generate_biography()
-    kingdom = Kingdom(name, motivation, biography)
+    kingdom = Kingdom(name, motivation, '')
+    kingdom.generate_biography()
 
     return kingdom
 
-
-# Create a kingdom, holder of the maps. But also backstory, civ, etc.
 my_kingdom = create_kingdom()
 print(my_kingdom.name)
 print(my_kingdom.motivation)

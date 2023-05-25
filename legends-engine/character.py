@@ -90,4 +90,4 @@ def create_character():
     return character
 
 
-print(create_character())
+#print(create_character())
