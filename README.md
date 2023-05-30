@@ -1,2 +1,2 @@
-# fun-ai
+# fun-openai
  its fun
