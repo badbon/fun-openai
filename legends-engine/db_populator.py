@@ -1,24 +1,10 @@
 import mysql.connector
 import os
+import sys
 from character import create_character
 import kingdom as kingdom_gen
 
-# Change the working directory to the location of this script
-os.chdir(os.path.dirname(os.path.abspath(__file__)))
-
-# Create a file called password.txt and store your MySQL password in it (gitignore will ignore this file)
-with open('password.txt', 'r') as file:
-    fileReadPassword = file.read().strip()
-
-mydb = mysql.connector.connect(
-  host="localhost",
-  user="dungeon",
-  password=fileReadPassword,
-  database="rkdb"
-)
-
-# CHARACTER TABLE
-def insert_character():
+def insert_character(mydb):
   character = create_character()
   cursor = mydb.cursor()
   try:
@@ -35,19 +21,13 @@ def insert_character():
     history = character['history']
 
     cursor.execute(query, (full_name, kingdom, race, biography, motivation, intent, history))
-    # Commit the changes to the database
     mydb.commit()
-
   except mysql.connector.Error as error:
     print("\nMySQL Query Error:", error)
-
   finally:
-    # Close the connection
     cursor.close()
-    mydb.close()
 
-# KINGDOM TABLE
-def insert_kingdom():
+def insert_kingdom(mydb):
   kingdom = kingdom_gen.create_kingdom()
   
   try:
@@ -60,25 +40,15 @@ def insert_kingdom():
     biography = kingdom.biography
 
     cursor = mydb.cursor()
-    print("\nDB: " + str(mydb))
     cursor.execute(query, (name, characters_associated, biography))
     mydb.commit()
-  
   except mysql.connector.Error as error:
     print("\nMySQL Query Error:", error)
-    
   finally:
     cursor.close()
-    mydb.close()
 
-
-# -----
-# Useful for first run on localhost
-def initialize_db():
-  # Create a cursor object to execute SQL queries
+def initialize_db(mydb):
   cursor = mydb.cursor()
-
-  # Create table - characters
   cursor.execute("""
   CREATE TABLE IF NOT EXISTS characters (
       id INT AUTO_INCREMENT PRIMARY KEY,
@@ -89,15 +59,12 @@ def initialize_db():
       motivation TEXT,
       intent TEXT,
       history TEXT)""")
-
-  # Create table - kingdoms
   cursor.execute("""
   CREATE TABLE IF NOT EXISTS kingdoms (
       id INT AUTO_INCREMENT PRIMARY KEY,
       name VARCHAR(255),
       characters_associated VARCHAR(255),
       biography TEXT)""")
-  
   cursor.execute("""CREATE TABLE IF NOT EXISTS maps (
     id INT AUTO_INCREMENT PRIMARY KEY,
     roombased TINYINT,
@@ -107,14 +74,32 @@ def initialize_db():
     name VARCHAR(255),
     intro TEXT,
     history TEXT);""")
-
-
-  # Commit the changes and close the connection
   mydb.commit()
   cursor.close()
-  mydb.close()
-  
-  
-# initialize_db()
-insert_kingdom()
-#insert_character()
+
+def main(num_characters, num_kingdoms):
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+    with open('password.txt', 'r') as file:
+        fileReadPassword = file.read().strip()
+    mydb = mysql.connector.connect(
+        host="localhost",
+        user="dungeon",
+        password=fileReadPassword,
+        database="rkdb"
+    )
+    initialize_db(mydb)
+    for _ in range(num_characters):
+        insert_character(mydb)
+    for _ in range(num_kingdoms):
+        insert_kingdom(mydb)
+    mydb.close()
+
+# Run this file with the number of characters and kingdoms to generate
+if __name__ == "__main__":
+    # Check for correct number of arguments, warn/exit if incorrect
+    if len(sys.argv) != 3:
+        print("Please provide the number of characters and kingdoms to generate.")
+        sys.exit(1)
+    num_characters = int(sys.argv[1])
+    num_kingdoms = int(sys.argv[2])
+    main(num_characters, num_kingdoms)

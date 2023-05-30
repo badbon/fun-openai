@@ -2,9 +2,12 @@ import openai
 import util
 import random
 
-openai.api_key = util.get_api_key()
-model_engine = "text-davinci-002"
-model_engine_BTest = "text-davinci-003"
+OPENAI_API_KEY = util.get_api_key()
+MODEL_ENGINE = "text-davinci-002"
+MODEL_ENGINE_BTEST = "text-davinci-003"
+
+def generate_random_attribute(attribute_list):
+    return random.choice(attribute_list)
 
 def generate_name():
     first_names = ["Aelar", "Aerin", "Aeron", "Aiden", "Aila", "Ailis", "Aislinn", "Alaric", "Aldair", "Alden", "Althaea", "Althea", "Amaranth", "Amaryllis", "Amethyst", "Anastaria", "Andriel", "Aneira", "Aneirin", "Arael", "Araminta", "Arcadia",
@@ -14,8 +17,8 @@ def generate_name():
                   "Ravenwood", "Redmane", "Rosewater", "Silversmith", "Snowdrift", "Stagrunner", "Stargazer", "Starweaver", "Stormchaser", "Stormcaller", "Stormwatcher", "Sunspear", "Thornbush", "Thunderstrike", "Vale", "Waverunner", "Whitethorn",
                   "Wildfire", "Wildheart", "Wintermoon", "Wolfbloom", "Woodland", "Wyrmslayer"]
 
-    first_name = random.choice(first_names)
-    last_name = random.choice(last_names)
+    first_name = generate_random_attribute(first_names)
+    last_name = generate_random_attribute(last_names)
     return f"{first_name} {last_name}"
 
 def create_character():
@@ -29,43 +32,44 @@ def create_character():
     # Randomly select character attributes
     name = generate_name()
 
-    race = random.choice(races)
-    motivation = random.choice(motivations)
-    intent = random.choice(types_of_character_intent)
+    race = generate_random_attribute(races)
+    motivation = generate_random_attribute(motivations)
+    intent = generate_random_attribute(types_of_character_intent)
     
     # More customized prompts testing
-    custom_prompt = "Create a fantasy RPG character who lives in a medieval fictional world " + " and currently lives in the dungeons to " + intent + prompt_clarification + name.lower()
+    custom_prompt = f"Create a fantasy RPG character who lives in a medieval fictional world and currently lives in the dungeons to {intent}{prompt_clarification}{name.lower()}"
 
-    # OpenAI prompt
-    basic_response = openai.Completion.create(
-        engine=model_engine,
-        prompt=custom_prompt,
-        max_tokens=180,
-        n=1,
-        stop=None,
-        temperature=1.0,
-        timeout=20,  
-    )
+    try:
+        # OpenAI prompt
+        basic_response = openai.Completion.create(
+            engine=MODEL_ENGINE,
+            prompt=custom_prompt,
+            max_tokens=180,
+            n=1,
+            stop=None,
+            temperature=1.0,
+            timeout=20,  
+        )
+    except openai.error.OpenAIError as e:
+        print(f"Received error from OpenAI: {e}")
+        return None
 
-    history_prompt = f"Create a medieval fantasy RPG {name} character with of {race.lower()} race. Describe the character's personality and motivations. What adventures has the character been on in their quest for {motivation}? \
-            Generate a short adventures story about the character. Be aware of preceeding intro not to make contradictions: " + basic_response.choices[0].text
-    print("DEBUG: " + history_prompt)      
-    history_response = openai.Completion.create(
-        engine=model_engine,
-        prompt=history_prompt,
-        max_tokens=240,
-        n=1,
-        stop=None,
-        temperature=1.0,
-        timeout=20, 
-    )
+    history_prompt = f"Create a medieval fantasy RPG {name} character with of {race.lower()} race. Describe the character's personality and motivations. What adventures has the character been on in their quest for {motivation}? Generate a short adventures story about the character. Be aware of preceeding intro not to make contradictions: {basic_response.choices[0].text}"
+    print("DEBUG: " + history_prompt)
 
-    def debug():
-        print("Character name: " + char_name)
-        print("Character motivations: " + char_motivations)
-        print("Character intent: " + intent)
-        print("\nBASIC RESPONSE:" + basic_response.choices[0].text)
-        print("\nHISTORY RESPONSE:" + history_response.choices[0].text)
+    try:  
+        history_response = openai.Completion.create(
+            engine=MODEL_ENGINE,
+            prompt=history_prompt,
+            max_tokens=240,
+            n=1,
+            stop=None,
+            temperature=1.0,
+            timeout=20, 
+        )
+    except openai.error.OpenAIError as e:
+        print(f"Received error from OpenAI: {e}")
+        return None
 
     # Extract information from history response
     history = history_response.choices[0].text
@@ -75,9 +79,6 @@ def create_character():
     char_name = name
     char_motivations = motivation
 
-    # Print final results
-    #debug()
-    
     character = {
         'full_name': char_name,
         'kingdom': 'Kingdom',
@@ -88,6 +89,3 @@ def create_character():
         'history': history_response.choices[0].text,
     }
     return character
-
-
-#print(create_character())
